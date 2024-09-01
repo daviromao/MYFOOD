@@ -35,7 +35,7 @@ public class PersistenciaXML<T extends Persistente> implements Persistencia<T> {
         }
     }
 
-    private void flushXML() {
+    public void flushXML() {
         try (XMLEncoder encoder = new XMLEncoder(new FileOutputStream(arquivo))) {
             encoder.writeObject(COUNT_ID);
             encoder.writeObject(objetos);
@@ -83,7 +83,13 @@ public class PersistenciaXML<T extends Persistente> implements Persistencia<T> {
 
     @Override
     public void deletarTodos() {
+        COUNT_ID = 0;
         objetos.clear();
+        flushXML();
+    }
+
+    @Override
+    public void salvarTodos() {
         flushXML();
     }
 }

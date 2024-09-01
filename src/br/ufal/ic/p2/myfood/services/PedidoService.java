@@ -11,10 +11,11 @@ import br.ufal.ic.p2.myfood.models.Produto;
 import br.ufal.ic.p2.myfood.persistence.Persistencia;
 import br.ufal.ic.p2.myfood.persistence.PersistenciaXML;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PedidoService {
-    private final Persistencia<Pedido> pedidos = new PersistenciaXML<>("pedidos.xml");
+    private final Persistencia<Pedido> pedidos = new PersistenciaXML<>("db/pedidos.xml");
 
     public int criarPedido(Cliente cliente, Empresa empresa) throws PedidoDuplicadoException {
 
@@ -74,11 +75,13 @@ public class PedidoService {
     }
 
     public int getNumeroPedido(Cliente cliente, Empresa empresa, int indice) throws AtributoInvalidoException {
-        List<Pedido> pedidosDoCliente = pedidos
-                                        .buscarTodos()
-                                        .stream()
-                                        .filter(pedido -> pedido.getCliente().equals(cliente) && pedido.getEmpresa().equals(empresa))
-                                        .toList();
+
+        List<Pedido> pedidosDoCliente = new ArrayList<>();
+
+        for(Pedido pedido : pedidos.buscarTodos()) {
+            if(pedido.getCliente().getId() == cliente.getId() && pedido.getEmpresa().getId() == empresa.getId())
+                    pedidosDoCliente.add(pedido);
+        }
 
         if(indice < 0 || indice >= pedidosDoCliente.size())
             throw new AtributoInvalidoException("Indice invalido");
@@ -94,5 +97,9 @@ public class PedidoService {
 
     public void deletarTodos() {
         pedidos.deletarTodos();
+    }
+
+    public void salvarTodos() {
+        pedidos.salvarTodos();
     }
 }

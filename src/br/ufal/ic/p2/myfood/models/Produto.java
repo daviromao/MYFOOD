@@ -91,4 +91,8 @@ public class Produto implements Persistente {
     public Empresa setEmpresa() {
         return empresa;
     }
+
+    public void setEmpresa(Empresa empresa) {
+        this.empresa = empresa;
+    }
 }

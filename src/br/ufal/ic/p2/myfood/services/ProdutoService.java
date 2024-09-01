@@ -7,7 +7,7 @@ import br.ufal.ic.p2.myfood.persistence.Persistencia;
 import br.ufal.ic.p2.myfood.persistence.PersistenciaXML;
 
 public class ProdutoService {
-    private final Persistencia<Produto> produtos = new PersistenciaXML<>("produtos.xml");
+    private final Persistencia<Produto> produtos = new PersistenciaXML<>("db/produtos.xml");
 
     public void salvar(Produto produto) throws ProdutoDuplicadoException {
         for(Produto p : produtos.buscarTodos()) {
@@ -28,17 +28,21 @@ public class ProdutoService {
         return produto;
     }
 
-    public void editarProduto(int idProduto, Produto novoProduto) throws ObjetoNaoEncontradoException {
+    public Produto editarProduto(int idProduto, Produto novoProduto) throws ObjetoNaoEncontradoException {
         Produto produto = buscar(idProduto);
 
         produto.setCategoria(novoProduto.getCategoria());
         produto.setNome(novoProduto.getNome());
         produto.setValor(novoProduto.getValor());
 
-        produtos.atualizar(idProduto, produto);
+        return produtos.atualizar(idProduto, produto);
     }
 
     public void deletarTodos(){
         produtos.deletarTodos();
+    }
+
+    public void salvarTodos(){
+        produtos.salvarTodos();
     }
 }

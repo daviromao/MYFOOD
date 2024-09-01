@@ -12,8 +12,8 @@ import java.util.List;
 public class Sistema {
     private static Sistema instance;
 
-    private EmpresaService empresaService = new EmpresaService();
     private UsuarioService usuarioService = new UsuarioService();
+    private EmpresaService empresaService = new EmpresaService();
     private ProdutoService produtoService = new ProdutoService();
     private PedidoService pedidoService = new PedidoService();
 
@@ -28,6 +28,10 @@ public class Sistema {
     }
 
     public void encerrarSistema(){
+        empresaService.salvarTodos();
+        usuarioService.salvarTodos();
+        produtoService.salvarTodos();
+        pedidoService.salvarTodos();
     }
 
     public static Sistema getInstance() {
@@ -151,6 +155,8 @@ public class Sistema {
     }
 
     public void adicionarProduto(int numero, int produto) throws ObjetoNaoEncontradoException, EstadoPedidoInvalidoException {
+        if(pedidoService.buscarPedido(numero) == null)
+            throw new ObjetoNaoEncontradoException("Nao existe pedido em aberto");
         Produto produtoObj = produtoService.buscar(produto);
         pedidoService.adicionarProduto(numero, produtoObj);
     }

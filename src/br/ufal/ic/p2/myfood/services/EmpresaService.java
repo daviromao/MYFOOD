@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EmpresaService {
-    private final Persistencia<Empresa> empresas = new PersistenciaXML<>("empresas.xml");
+    private final Persistencia<Empresa> empresas = new PersistenciaXML<>("db/empresas.xml");
 
     public int salvar(Empresa novaEmpresa) throws EmpresaInvalidaException {
         for (Empresa e : empresas.buscarTodos()) {
@@ -70,4 +70,9 @@ public class EmpresaService {
     public void deletarTodos() {
         empresas.deletarTodos();
     }
+
+    public void salvarTodos() {
+        empresas.salvarTodos();
+    }
+
 }

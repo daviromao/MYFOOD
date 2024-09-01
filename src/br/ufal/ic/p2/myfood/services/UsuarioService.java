@@ -8,7 +8,7 @@ import br.ufal.ic.p2.myfood.persistence.Persistencia;
 import br.ufal.ic.p2.myfood.persistence.PersistenciaXML;
 
 public class UsuarioService {
-    private final Persistencia<Usuario> usuarios = new PersistenciaXML<>("usuarios.xml");
+    private final Persistencia<Usuario> usuarios = new PersistenciaXML<>("db/usuarios.xml");
 
     public void salvar(Usuario usuario) throws EmailExistenteException {
         for (Usuario u : usuarios.buscarTodos()) {
@@ -39,7 +39,11 @@ public class UsuarioService {
         return usuarios.buscar(id);
     }
 
-    public void deletarTodos(){
+    public void deletarTodos() {
         usuarios.deletarTodos();
+    }
+
+    public void salvarTodos() {
+        usuarios.salvarTodos();
     }
 }

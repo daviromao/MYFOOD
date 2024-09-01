@@ -13,4 +13,6 @@ public interface Persistencia<T extends Persistente> {
     void deletar(T object);
 
     void deletarTodos();
+
+    void salvarTodos();
 }
