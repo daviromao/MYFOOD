@@ -30,7 +30,7 @@ A classe PersistenciaXML e a própria interface foi criada utilizando generics, 
 
 #### Serviços:
 
-Implementa as regras de negócio de cada modelo.
+Implementa as regras de negócio de cada modelo. Ao total são os seguintes serviços: EmpresaService, PedidoService, ProdutoService e UsuarioService (Dono e Cliente).
 
 #### Sistema
 
@@ -39,6 +39,33 @@ Classe responsável pro fazer a orquestração das ações do sistema em um nív
 #### Facade
 
 A facade é a classe utilizada apenas como porta de entrada para o EasyAccept. Ela é responsável por receber os comandos do EasyAccept e chamar os métodos corretos do sistema.
+
+## Padrões de Projeto:
+
+### Facade
+
+- **Descrição Geral**: Fornecer uma interface unificada para um conjunto de interfaces em um subsistema. Facade define uma interface de nível mais alto que torna o subsistema mais fácil de usar.
+- **Problema Resolvido**: Interação com o sistema de forma mais simples e unificada.
+- **Identificação da Oportunidade**: A necessidade de criar uma classe que orquestrasse as ações do sistema em um nível mais alto.
+- **Aplicação do Padrão**: A classe Facade foi criada para receber os comandos do EasyAccept e chamar os métodos corretos do sistema.
+
+### Singleton
+
+- **Descrição Geral**: Garantir que uma classe tenha apenas uma instância e fornecer um ponto de acesso global para a instância.
+- **Problema Resolvido**: Garantir que uma classe tenha apenas uma instância.
+- **Identificação da Oportunidade**: A necessidade de garantir que a classe de sistema tenha apenas uma instância.
+- **Aplicação do Padrão**: A classe Sistema foi implementada como um Singleton.
+
+```java
+    private static Sistema instance;
+    ...
+    public static Sistema getInstance() {
+        if (instance == null) {
+            instance = new Sistema();
+        }
+        return instance;
+    }
+```
 
 ## Decisões:
 
