@@ -58,7 +58,13 @@ public class Pedido implements Persistente {
         }
     }
 
-    public void adicionarProduto(Produto produto) {
+    public void adicionarProduto(Produto produto) throws EstadoPedidoInvalidoException, ObjetoNaoEncontradoException {
+        if(!estado.equals("aberto"))
+            throw new EstadoPedidoInvalidoException("Nao e possivel adcionar produtos a um pedido fechado");
+
+        if(!empresa.equals(produto.getEmpresa()))
+            throw new ObjetoNaoEncontradoException("O produto nao pertence a essa empresa");
+
         produtos.add(produto);
     }
 

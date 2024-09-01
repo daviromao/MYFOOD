@@ -39,12 +39,6 @@ public class PedidoService {
         if (pedido == null)
             throw new ObjetoNaoEncontradoException("Nao existe pedido em aberto");
 
-        if(!pedido.getEstado().equals("aberto"))
-            throw new EstadoPedidoInvalidoException("Nao e possivel adcionar produtos a um pedido fechado");
-
-        if(!pedido.getEmpresa().equals(produto.getEmpresa()))
-            throw new ObjetoNaoEncontradoException("O produto nao pertence a essa empresa");
-
         pedido.adicionarProduto(produto);
         pedidos.atualizar(idPedido, pedido);
     }
