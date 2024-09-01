@@ -3,7 +3,6 @@ package br.ufal.ic.p2.myfood.models;
 import br.ufal.ic.p2.myfood.exceptions.AtributoInvalidoException;
 import br.ufal.ic.p2.myfood.persistence.Persistente;
 
-import java.io.Serializable;
 import java.util.List;
 
 public abstract class Usuario implements Persistente {
