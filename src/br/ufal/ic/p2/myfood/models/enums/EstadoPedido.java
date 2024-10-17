@@ -1,4 +1,4 @@
-package br.ufal.ic.p2.myfood.models;
+package br.ufal.ic.p2.myfood.models.enums;
 
 public enum EstadoPedido {
     ABERTO("aberto"), PREPARANDO("preparando"), PRONTO("pronto"), ENTREGANDO("entregando"), ENTREGUE("entregue");

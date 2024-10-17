@@ -1,13 +1,16 @@
-package br.ufal.ic.p2.myfood.models;
+package br.ufal.ic.p2.myfood.models.empresas;
 
 import br.ufal.ic.p2.myfood.exceptions.AtributoInvalidoException;
 import br.ufal.ic.p2.myfood.exceptions.ObjetoNaoEncontradoException;
+import br.ufal.ic.p2.myfood.models.pedidos.Produto;
+import br.ufal.ic.p2.myfood.models.users.Dono;
+import br.ufal.ic.p2.myfood.models.users.Entregador;
 import br.ufal.ic.p2.myfood.persistence.Persistente;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Empresa implements Persistente {
+public abstract class Empresa implements Persistente {
     private int id;
     private Dono dono;
     private String nome;

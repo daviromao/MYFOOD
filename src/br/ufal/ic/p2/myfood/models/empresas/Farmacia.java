@@ -1,6 +1,7 @@
-package br.ufal.ic.p2.myfood.models;
+package br.ufal.ic.p2.myfood.models.empresas;
 
 import br.ufal.ic.p2.myfood.exceptions.AtributoInvalidoException;
+import br.ufal.ic.p2.myfood.models.users.Dono;
 
 public class Farmacia extends Empresa {
     private boolean aberto24h;
@@ -9,7 +10,7 @@ public class Farmacia extends Empresa {
     public Farmacia(){
     }
 
-    public Farmacia(String tipoEmpresa, Dono dono, String nome, String endereco,  boolean aberto24h, int numeroDeFuncionarios) throws AtributoInvalidoException {
+    public Farmacia(String tipoEmpresa, Dono dono, String nome, String endereco, boolean aberto24h, int numeroDeFuncionarios) throws AtributoInvalidoException {
         super(tipoEmpresa, dono, nome, endereco);
         this.aberto24h = aberto24h;
         this.numeroDeFuncionarios = numeroDeFuncionarios;

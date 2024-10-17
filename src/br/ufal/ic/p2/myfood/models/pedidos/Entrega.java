@@ -1,6 +1,7 @@
-package br.ufal.ic.p2.myfood.models;
+package br.ufal.ic.p2.myfood.models.pedidos;
 
 import br.ufal.ic.p2.myfood.exceptions.AtributoInvalidoException;
+import br.ufal.ic.p2.myfood.models.users.Entregador;
 import br.ufal.ic.p2.myfood.persistence.Persistente;
 
 public class Entrega implements Persistente {

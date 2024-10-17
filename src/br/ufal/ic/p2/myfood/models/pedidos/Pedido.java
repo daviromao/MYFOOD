@@ -1,8 +1,11 @@
-package br.ufal.ic.p2.myfood.models;
+package br.ufal.ic.p2.myfood.models.pedidos;
 
 import br.ufal.ic.p2.myfood.exceptions.AtributoInvalidoException;
 import br.ufal.ic.p2.myfood.exceptions.EstadoPedidoInvalidoException;
 import br.ufal.ic.p2.myfood.exceptions.ObjetoNaoEncontradoException;
+import br.ufal.ic.p2.myfood.models.enums.EstadoPedido;
+import br.ufal.ic.p2.myfood.models.users.Cliente;
+import br.ufal.ic.p2.myfood.models.empresas.Empresa;
 import br.ufal.ic.p2.myfood.persistence.Persistente;
 
 import java.util.ArrayList;

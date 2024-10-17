@@ -4,7 +4,12 @@ import br.ufal.ic.p2.myfood.exceptions.AtributoInvalidoException;
 import br.ufal.ic.p2.myfood.exceptions.EstadoPedidoInvalidoException;
 import br.ufal.ic.p2.myfood.exceptions.ObjetoNaoEncontradoException;
 import br.ufal.ic.p2.myfood.exceptions.PedidoDuplicadoException;
-import br.ufal.ic.p2.myfood.models.*;
+import br.ufal.ic.p2.myfood.models.pedidos.Pedido;
+import br.ufal.ic.p2.myfood.models.enums.EstadoPedido;
+import br.ufal.ic.p2.myfood.models.pedidos.Produto;
+import br.ufal.ic.p2.myfood.models.users.Cliente;
+import br.ufal.ic.p2.myfood.models.empresas.Empresa;
+import br.ufal.ic.p2.myfood.models.users.Entregador;
 import br.ufal.ic.p2.myfood.persistence.Persistencia;
 import br.ufal.ic.p2.myfood.persistence.PersistenciaXML;
 

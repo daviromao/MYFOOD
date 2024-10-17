@@ -3,7 +3,7 @@ package br.ufal.ic.p2.myfood.services;
 import br.ufal.ic.p2.myfood.exceptions.CredenciaisInvalidasException;
 import br.ufal.ic.p2.myfood.exceptions.EmailExistenteException;
 import br.ufal.ic.p2.myfood.exceptions.ObjetoNaoEncontradoException;
-import br.ufal.ic.p2.myfood.models.Usuario;
+import br.ufal.ic.p2.myfood.models.users.Usuario;
 import br.ufal.ic.p2.myfood.persistence.Persistencia;
 import br.ufal.ic.p2.myfood.persistence.PersistenciaXML;
 

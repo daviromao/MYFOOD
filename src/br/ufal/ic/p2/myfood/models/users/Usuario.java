@@ -1,6 +1,8 @@
-package br.ufal.ic.p2.myfood.models;
+package br.ufal.ic.p2.myfood.models.users;
 
 import br.ufal.ic.p2.myfood.exceptions.AtributoInvalidoException;
+import br.ufal.ic.p2.myfood.models.enums.Permissoes;
+import br.ufal.ic.p2.myfood.models.enums.TipoUsuario;
 import br.ufal.ic.p2.myfood.persistence.Persistente;
 
 import java.util.List;

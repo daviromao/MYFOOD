@@ -1,7 +1,18 @@
 package br.ufal.ic.p2.myfood;
 
 import br.ufal.ic.p2.myfood.exceptions.*;
-import br.ufal.ic.p2.myfood.models.*;
+import br.ufal.ic.p2.myfood.models.empresas.Empresa;
+import br.ufal.ic.p2.myfood.models.empresas.Farmacia;
+import br.ufal.ic.p2.myfood.models.empresas.Mercado;
+import br.ufal.ic.p2.myfood.models.pedidos.Pedido;
+import br.ufal.ic.p2.myfood.models.empresas.Restaurante;
+import br.ufal.ic.p2.myfood.models.enums.EntregadorStatus;
+import br.ufal.ic.p2.myfood.models.enums.EstadoPedido;
+import br.ufal.ic.p2.myfood.models.enums.Permissoes;
+import br.ufal.ic.p2.myfood.models.enums.TipoUsuario;
+import br.ufal.ic.p2.myfood.models.pedidos.Entrega;
+import br.ufal.ic.p2.myfood.models.pedidos.Produto;
+import br.ufal.ic.p2.myfood.models.users.*;
 import br.ufal.ic.p2.myfood.services.*;
 
 import java.util.List;

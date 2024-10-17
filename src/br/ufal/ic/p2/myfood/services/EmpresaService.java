@@ -3,8 +3,8 @@ package br.ufal.ic.p2.myfood.services;
 import br.ufal.ic.p2.myfood.exceptions.AtributoInvalidoException;
 import br.ufal.ic.p2.myfood.exceptions.EmpresaInvalidaException;
 import br.ufal.ic.p2.myfood.exceptions.ObjetoNaoEncontradoException;
-import br.ufal.ic.p2.myfood.models.Dono;
-import br.ufal.ic.p2.myfood.models.Empresa;
+import br.ufal.ic.p2.myfood.models.users.Dono;
+import br.ufal.ic.p2.myfood.models.empresas.Empresa;
 import br.ufal.ic.p2.myfood.persistence.Persistencia;
 import br.ufal.ic.p2.myfood.persistence.PersistenciaXML;
 

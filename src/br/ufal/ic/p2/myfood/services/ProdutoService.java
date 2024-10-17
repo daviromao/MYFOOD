@@ -2,7 +2,7 @@ package br.ufal.ic.p2.myfood.services;
 
 import br.ufal.ic.p2.myfood.exceptions.ObjetoNaoEncontradoException;
 import br.ufal.ic.p2.myfood.exceptions.ProdutoDuplicadoException;
-import br.ufal.ic.p2.myfood.models.Produto;
+import br.ufal.ic.p2.myfood.models.pedidos.Produto;
 import br.ufal.ic.p2.myfood.persistence.Persistencia;
 import br.ufal.ic.p2.myfood.persistence.PersistenciaXML;
 

@@ -1,10 +1,11 @@
-package br.ufal.ic.p2.myfood.models;
+package br.ufal.ic.p2.myfood.models.empresas;
 
 import br.ufal.ic.p2.myfood.exceptions.AtributoInvalidoException;
+import br.ufal.ic.p2.myfood.models.users.Dono;
 
 import java.util.List;
 
-public class Mercado extends Empresa{
+public class Mercado extends Empresa {
     private static final List<String> tiposMercado = List.of("supermercado", "minimercado", "atacadista");
     private String tipoMercado;
     private String abre;

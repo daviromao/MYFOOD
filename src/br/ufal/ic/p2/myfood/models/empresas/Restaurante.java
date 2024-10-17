@@ -1,6 +1,7 @@
-package br.ufal.ic.p2.myfood.models;
+package br.ufal.ic.p2.myfood.models.empresas;
 
 import br.ufal.ic.p2.myfood.exceptions.AtributoInvalidoException;
+import br.ufal.ic.p2.myfood.models.users.Dono;
 
 public class Restaurante extends Empresa {
     private String tipoCozinha;
