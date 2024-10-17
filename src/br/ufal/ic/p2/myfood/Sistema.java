@@ -386,7 +386,15 @@ public class Sistema {
         return pedidoService.getNumeroPedido(clienteObj, empresaObj, indice);
     }
 
-    // Milestone 2
+    /**
+     * Altera o horario de funcionamento de um mercado
+     *
+     * @param empresaId O ID da empresa
+     * @param abre O horario de abertura
+     * @param fecha O horario de fechamento
+     * @throws ObjetoNaoEncontradoException Se a empresa não for encontrada
+     * @throws AtributoInvalidoException Se a empresa não for um mercado ou se o horario for invalido
+     */
     public void alterarFuncionamento(int empresaId, String abre, String fecha) throws ObjetoNaoEncontradoException, AtributoInvalidoException {
         Empresa empresa = empresaService.buscarEmpresaPorId(empresaId);
 
@@ -396,6 +404,21 @@ public class Sistema {
         ((Mercado) empresa).alterarHorario(abre, fecha);
     }
 
+    /**
+     * Cria uma empresa do tipo Farmacia
+     *
+     * @param tipoEmpresa O tipo da empresa
+     * @param idDono      O ID do dono da empresa
+     * @param nome        O nome da empresa
+     * @param endereco    O endereço da empresa
+     * @param aberto24h   Se a empresa funciona 24 horas
+     * @param numeroDeFuncionarios O número de funcionários da empresa
+     * @return O ID da nova empresa criada
+     * @throws ObjetoNaoEncontradoException Se o dono não for encontrado
+     * @throws UsuarioSemPermissaoException Se o dono não tiver permissão para criar uma empresa
+     * @throws AtributoInvalidoException Se algum atributo for inválido
+     * @throws EmpresaInvalidaException Se a empresa for inválida
+     */
     public int criarEmpresa(String tipoEmpresa, int idDono, String nome, String endereco, boolean aberto24h, int numeroDeFuncionarios) throws ObjetoNaoEncontradoException, UsuarioSemPermissaoException, AtributoInvalidoException, EmpresaInvalidaException {
         Usuario usuario = usuarioService.buscar(idDono);
 
@@ -406,6 +429,14 @@ public class Sistema {
         return empresaService.salvar(novaEmpresa);
     }
 
+    /**
+     * Cadastra um entregador em uma empresa
+     *
+     * @param empresa    O ID da empresa
+     * @param entregador O ID do entregador
+     * @throws ObjetoNaoEncontradoException Se a empresa ou o entregador não forem encontrados
+     * @throws UsuarioSemPermissaoException Se o usuário não tiver permissão para entregar pedidos
+     */
     public void cadastrarEntregador(int empresa, int entregador) throws ObjetoNaoEncontradoException, UsuarioSemPermissaoException {
         Usuario usuario = usuarioService.buscar(entregador);
         Empresa empresaObj = empresaService.buscarEmpresaPorId(empresa);
@@ -417,6 +448,22 @@ public class Sistema {
         empresaObj.adicionarEntregador((Entregador) usuario);
     }
 
+    /**
+     * Cria uma empresa do tipo Mercado
+     *
+     * @param tipoEmpresa O tipo da empresa
+     * @param dono        O ID do dono da empresa
+     * @param nome        O nome da empresa
+     * @param endereco    O endereço da empresa
+     * @param abre        O horário de abertura
+     * @param fecha       O horário de fechamento
+     * @param tipoMercado O tipo de mercado
+     * @return O ID da nova empresa criada
+     * @throws ObjetoNaoEncontradoException Se o dono não for encontrado
+     * @throws UsuarioSemPermissaoException Se o dono não tiver permissão para criar uma empresa
+     * @throws AtributoInvalidoException    Se algum atributo for inválido
+     * @throws EmpresaInvalidaException     Se a empresa for inválida
+     */
     public int criarEmpresa(String tipoEmpresa, int dono, String nome, String endereco, String abre, String fecha, String tipoMercado) throws ObjetoNaoEncontradoException, UsuarioSemPermissaoException, AtributoInvalidoException, EmpresaInvalidaException {
         Usuario usuario = usuarioService.buscar(dono);
 
@@ -427,6 +474,13 @@ public class Sistema {
         return empresaService.salvar(novaEmpresa);
     }
 
+    /**
+     * Obtém os entregadores de uma empresa
+     *
+     * @param empresa O ID da empresa
+     * @return O valor do atributo
+     * @throws ObjetoNaoEncontradoException Se a empresa não for encontrada
+     */
     public String getEntregadores(int empresa) throws ObjetoNaoEncontradoException {
         Empresa empresaObj = empresaService.buscarEmpresaPorId(empresa);
         List<Entregador> entregadores = empresaObj.getEntregadores();
@@ -438,6 +492,12 @@ public class Sistema {
         return "{" + entregadoresString + "}";
     }
 
+    /**
+     * Obtém as empresas de um entregador
+     *
+     * @param entregador O ID do entregador
+     * @throws ObjetoNaoEncontradoException Se a empresa ou o entregador não forem encontrados
+     */
     public String getEmpresas(int entregador) throws ObjetoNaoEncontradoException {
         Usuario usuario = usuarioService.buscar(entregador);
 
@@ -454,6 +514,12 @@ public class Sistema {
         return "{" + empresasString + "}";
     }
 
+    /**
+     * Prepara um pedido para entrega
+     *
+     * @param idPedido O ID do pedido
+     * @throws EstadoPedidoInvalidoException Se o pedido não estiver em estado válido para preparação
+     */
     public void liberarPedido(int idPedido) throws EstadoPedidoInvalidoException {
         Pedido pedido = pedidoService.buscarPedido(idPedido);
 
@@ -466,6 +532,13 @@ public class Sistema {
         pedido.setEstado(EstadoPedido.PRONTO);
     }
 
+    /**
+     * Obtém o ID de um pedido para entrega
+     *
+     * @param entregador O ID do entregador
+     * @return O ID do pedido
+     * @throws ObjetoNaoEncontradoException Se o entregador não for encontrado
+     */
     public int obterPedido(int entregador) throws ObjetoNaoEncontradoException {
         Usuario usuario = usuarioService.buscar(entregador);
 
@@ -483,6 +556,16 @@ public class Sistema {
         return pedido.getId();
     }
 
+    /**
+     * Cria uma entrega
+     *
+     * @param pedido     O ID do pedido
+     * @param entregador O ID do entregador
+     * @param destino    O destino da entrega
+     * @return O ID da entrega
+     * @throws ObjetoNaoEncontradoException    Se o pedido ou o entregador não forem encontrados
+     * @throws EstadoPedidoInvalidoException   Se o pedido não estiver em estado válido para entrega
+     */
     public int criarEntrega(int pedido, int entregador, String destino) throws ObjetoNaoEncontradoException, EstadoPedidoInvalidoException {
         Pedido pedidoObj = pedidoService.buscarPedido(pedido);
         Usuario usuario = usuarioService.buscar(entregador);
@@ -501,10 +584,25 @@ public class Sistema {
         return entrega.getId();
     }
 
+    /**
+     * Obtém o valor de um atributo de uma entrega
+     *
+     * @param idEntrega O ID da entrega
+     * @param atributo  O nome do atributo
+     * @return O valor do atributo
+     * @throws AtributoInvalidoException    Se o atributo for inválido
+     */
     public String getAtributo(int idEntrega, String atributo) throws AtributoInvalidoException {
         return entregaService.buscar(idEntrega).getAtributo(atributo);
     }
 
+    /**
+     * Obtém o ID de uma entrega
+     *
+     * @param idPedido O ID do pedido
+     * @return O ID da entrega
+     * @throws ObjetoNaoEncontradoException Se o pedido não for encontrado
+     */
     public String getIdEntrega(int idPedido) throws ObjetoNaoEncontradoException {
         Pedido pedido = pedidoService.buscarPedido(idPedido);
 
@@ -514,6 +612,12 @@ public class Sistema {
         return String.valueOf(pedido.getEntrega().getId());
     }
 
+    /**
+     * Entrega um pedido
+     *
+     * @param idEntrega O ID da entrega
+     * @throws ObjetoNaoEncontradoException Se a entrega não for encontrada
+     */
     public void entregar(int idEntrega) throws ObjetoNaoEncontradoException {
         entregaService.finalizarEntrega(idEntrega);
     }
