@@ -12,8 +12,8 @@ public class Cliente extends Usuario {
     }
 
     @Override
-    public String getTipo() {
-        return TipoUsuario.CLIENTE.name();
+    public TipoUsuario getTipo() {
+        return TipoUsuario.CLIENTE;
     }
 
     @Override

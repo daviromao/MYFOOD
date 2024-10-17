@@ -7,6 +7,8 @@ import br.ufal.ic.p2.myfood.models.Usuario;
 import br.ufal.ic.p2.myfood.persistence.Persistencia;
 import br.ufal.ic.p2.myfood.persistence.PersistenciaXML;
 
+import java.util.List;
+
 public class UsuarioService {
     private final Persistencia<Usuario> usuarios = new PersistenciaXML<>("db/usuarios.xml");
 
@@ -18,6 +20,10 @@ public class UsuarioService {
         }
 
         usuarios.salvar(usuario);
+    }
+
+    public List<Usuario> buscarTodos() {
+        return usuarios.buscarTodos();
     }
 
     public int login(String email, String senha) {

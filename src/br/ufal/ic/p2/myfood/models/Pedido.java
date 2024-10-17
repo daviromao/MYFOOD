@@ -13,13 +13,15 @@ public class Pedido implements Persistente {
     private int id;
     private Cliente cliente;
     private Empresa empresa;
-    private String estado;
+    private EstadoPedido estado;
     private List<Produto> produtos;
+
+    private Entrega entrega;
 
     public Pedido() {
     }
 
-    public Pedido(Cliente cliente, Empresa empresa, String estado) {
+    public Pedido(Cliente cliente, Empresa empresa, EstadoPedido estado) {
         this.cliente = cliente;
         this.empresa = empresa;
         this.estado = estado;
@@ -42,24 +44,18 @@ public class Pedido implements Persistente {
         if (atributo == null || atributo.isEmpty())
             throw new AtributoInvalidoException("Atributo invalido");
 
-        switch (atributo) {
-            case "cliente":
-                return String.valueOf(cliente.getNome());
-            case "empresa":
-                return String.valueOf(empresa.getNome());
-            case "estado":
-                return getEstado();
-            case "valor":
-                return String.format(Locale.US, "%.2f", getValorTotal());
-            case "produtos":
-                return "{" + getNomeProdutos() + "}";
-            default:
-                throw new AtributoInvalidoException("Atributo nao existe");
-        }
+        return switch (atributo) {
+            case "cliente" -> String.valueOf(cliente.getNome());
+            case "empresa" -> String.valueOf(empresa.getNome());
+            case "estado" -> getEstado().estado;
+            case "valor" -> String.format(Locale.US, "%.2f", getValorTotal());
+            case "produtos" -> "{" + getNomeProdutos() + "}";
+            default -> throw new AtributoInvalidoException("Atributo nao existe");
+        };
     }
 
     public void adicionarProduto(Produto produto) throws EstadoPedidoInvalidoException, ObjetoNaoEncontradoException {
-        if(!estado.equals("aberto"))
+        if(!estado.equals(EstadoPedido.ABERTO))
             throw new EstadoPedidoInvalidoException("Nao e possivel adcionar produtos a um pedido fechado");
 
         if(!empresa.equals(produto.getEmpresa()))
@@ -69,7 +65,7 @@ public class Pedido implements Persistente {
     }
 
     public void removerProduto(String produto) throws ObjetoNaoEncontradoException, AtributoInvalidoException, EstadoPedidoInvalidoException {
-        if (!estado.equals("aberto"))
+        if (!estado.equals(EstadoPedido.ABERTO))
             throw new EstadoPedidoInvalidoException("Nao e possivel remover produtos de um pedido fechado");
 
         if (produto == null || produto.isEmpty())
@@ -100,11 +96,11 @@ public class Pedido implements Persistente {
         this.empresa = empresa;
     }
 
-    public String getEstado() {
+    public EstadoPedido getEstado() {
         return estado;
     }
 
-    public void setEstado(String estado) {
+    public void setEstado(EstadoPedido estado) {
         this.estado = estado;
     }
 
@@ -114,6 +110,14 @@ public class Pedido implements Persistente {
 
     public void setProdutos(List<Produto> produtos) {
         this.produtos = produtos;
+    }
+
+    public Entrega getEntrega() {
+        return entrega;
+    }
+
+    public void setEntrega(Entrega entrega) {
+        this.entrega = entrega;
     }
 
     @Override

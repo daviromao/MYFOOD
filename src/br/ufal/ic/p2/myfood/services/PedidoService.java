@@ -4,10 +4,7 @@ import br.ufal.ic.p2.myfood.exceptions.AtributoInvalidoException;
 import br.ufal.ic.p2.myfood.exceptions.EstadoPedidoInvalidoException;
 import br.ufal.ic.p2.myfood.exceptions.ObjetoNaoEncontradoException;
 import br.ufal.ic.p2.myfood.exceptions.PedidoDuplicadoException;
-import br.ufal.ic.p2.myfood.models.Cliente;
-import br.ufal.ic.p2.myfood.models.Empresa;
-import br.ufal.ic.p2.myfood.models.Pedido;
-import br.ufal.ic.p2.myfood.models.Produto;
+import br.ufal.ic.p2.myfood.models.*;
 import br.ufal.ic.p2.myfood.persistence.Persistencia;
 import br.ufal.ic.p2.myfood.persistence.PersistenciaXML;
 
@@ -22,12 +19,12 @@ public class PedidoService {
         for (Pedido pedido : pedidos.buscarTodos()) {
             if (pedido.getCliente().equals(cliente) &&
                 pedido.getEmpresa().equals(empresa) &&
-                pedido.getEstado().equals("aberto")) {
+                pedido.getEstado().equals(EstadoPedido.ABERTO)) {
                 throw new PedidoDuplicadoException();
             }
         }
 
-        Pedido novoPedido = new Pedido(cliente, empresa, "aberto");
+        Pedido novoPedido = new Pedido(cliente, empresa, EstadoPedido.ABERTO);
 
         pedidos.salvar(novoPedido);
         return novoPedido.getId();
@@ -59,7 +56,7 @@ public class PedidoService {
         if(pedido == null)
             throw new ObjetoNaoEncontradoException("Pedido nao encontrado");
 
-        pedido.setEstado("preparando");
+        pedido.setEstado(EstadoPedido.PREPARANDO);
         pedidos.atualizar(idPedido, pedido);
     }
 
@@ -87,6 +84,28 @@ public class PedidoService {
         Pedido pedido = pedidos.buscar(numero);
 
         return pedido;
+    }
+
+    public Pedido buscarPedidoPorEntregador(Entregador entregador){
+        List<Pedido> pedidosList = pedidos
+                .buscarTodos()
+                .stream()
+                .filter(
+                    pedido -> pedido.getEmpresa().getEntregadores().contains(entregador) &&
+                            pedido.getEstado().equals(EstadoPedido.PRONTO))
+                .toList();
+
+        List<Pedido> prioridade = pedidosList
+                .stream()
+                .filter(pedido -> pedido.getEmpresa().getTipoEmpresa().equals("farmacia"))
+                .toList();
+        if(prioridade.size() > 0)
+            return prioridade.get(0);
+
+        if(pedidosList.size() > 0)
+            return pedidosList.get(0);
+
+        return null;
     }
 
     public void deletarTodos() {

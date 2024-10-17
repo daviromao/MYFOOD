@@ -16,4 +16,3 @@ expect "{[Sorvete morango, Refrigerante]}" listarProdutos empresa=${e1}
 expect "{[]}" listarProdutos empresa=${e3}
 
 encerrarSistema
-quit

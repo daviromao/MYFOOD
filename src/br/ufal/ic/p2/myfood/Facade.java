@@ -84,6 +84,60 @@ public class Facade {
         return sistema.getNumeroPedido(cliente, empresa, indice);
     }
 
+    // Milestone 2
+
+    public int criarEmpresa(String tipoEmpresa, int dono, String nome, String endereco, String abre, String fecha, String tipoMercado) throws AtributoInvalidoException, EmpresaInvalidaException, ObjetoNaoEncontradoException, UsuarioSemPermissaoException {
+        return sistema.criarEmpresa(tipoEmpresa, dono, nome, endereco, abre, fecha, tipoMercado);
+    }
+
+    public int criarEmpresa(String tipoEmpresa, int dono, String nome, String endereco, boolean aberto24Horas, int numeroFuncionarios) throws AtributoInvalidoException, EmpresaInvalidaException, ObjetoNaoEncontradoException, UsuarioSemPermissaoException {
+        return sistema.criarEmpresa(tipoEmpresa, dono, nome, endereco, aberto24Horas, numeroFuncionarios);
+    }
+
+    public void alterarFuncionamento(int empresa, String abre, String fecha) throws AtributoInvalidoException, ObjetoNaoEncontradoException {
+        sistema.alterarFuncionamento(empresa, abre, fecha);
+    }
+
+    public void criarUsuario(String nome, String email, String senha, String endereco, String veiculo, String placa) throws AtributoInvalidoException, EmailExistenteException {
+        sistema.criarUsuario(nome, email, senha, endereco, veiculo, placa);
+    }
+
+    public void cadastrarEntregador(int entregador, int empresa) throws ObjetoNaoEncontradoException, UsuarioSemPermissaoException {
+        sistema.cadastrarEntregador(entregador, empresa);
+    }
+
+    public String getEntregadores(int empresa) throws ObjetoNaoEncontradoException {
+        return sistema.getEntregadores(empresa);
+    }
+
+    public String getEmpresas(int entregador) throws ObjetoNaoEncontradoException {
+        return sistema.getEmpresas(entregador);
+    }
+
+    public int obterPedido(int entregador) throws ObjetoNaoEncontradoException {
+        return sistema.obterPedido(entregador);
+    }
+
+    public void liberarPedido(int pedido) throws EstadoPedidoInvalidoException {
+        sistema.liberarPedido(pedido);
+    }
+
+    public int criarEntrega(int pedido, int entregador, String destino) throws ObjetoNaoEncontradoException, EstadoPedidoInvalidoException {
+        return sistema.criarEntrega(pedido, entregador, destino);
+    }
+
+    public String getEntrega(int entrega, String atributo) throws ObjetoNaoEncontradoException, AtributoInvalidoException {
+        return sistema.getAtributo(entrega, atributo);
+    }
+
+    public String getIdEntrega(int pedido) throws ObjetoNaoEncontradoException {
+        return sistema.getIdEntrega(pedido);
+    }
+
+    public void entregar(int entrega) throws ObjetoNaoEncontradoException, EstadoPedidoInvalidoException {
+        sistema.entregar(entrega);
+    }
+
     public void encerrarSistema() {
         sistema.encerrarSistema();
     }

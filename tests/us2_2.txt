@@ -17,4 +17,3 @@ expect "{[[Pastelaria do Carlos, Rua Segura N 987], [Sushi do Carlos, Rua Legal 
 expect "{[[Sorveteria do Roberto, Rua Segura N 987]]}" getEmpresasDoUsuario idDono=${id3}
 
 encerrarSistema
-quit

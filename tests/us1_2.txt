@@ -15,4 +15,3 @@ expect "544.732.410-68" getAtributoUsuario id=${id2} atributo="cpf"
 
 
 encerrarSistema
-quit

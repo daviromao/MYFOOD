@@ -104,4 +104,3 @@ expect "{[]}" listarProdutos empresa=${eid3}
 expectError "Empresa nao encontrada" listarProdutos empresa=9999
 
 encerrarSistema
-quit

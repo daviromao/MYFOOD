@@ -102,4 +102,3 @@ expectError "Indice invalido" getIdEmpresa idDono=${id2} nome="Pastelaria do Car
 
 
 encerrarSistema
-quit

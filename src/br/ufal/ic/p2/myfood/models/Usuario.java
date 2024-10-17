@@ -85,7 +85,7 @@ public abstract class Usuario implements Persistente {
         this.id = id;
     }
 
-    public abstract String getTipo();
+    public abstract TipoUsuario getTipo();
 
     public abstract List<Permissoes> getPermissoes();
 }

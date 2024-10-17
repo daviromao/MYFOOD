@@ -12,34 +12,44 @@ public class Empresa implements Persistente {
     private Dono dono;
     private String nome;
     private String endereco;
-    private String tipoCozinha;
     private String tipoEmpresa;
 
     private List<Produto> produtos;
-    public Empresa(){};
-    public Empresa(String tipoEmpresa, Dono dono, String nome, String endereco, String tipoCozinha) throws AtributoInvalidoException {
-        if(nome == null || nome.isEmpty())
+    private List<Entregador> entregadores;
+
+    public Empresa() {
+    }
+
+    ;
+
+    public Empresa(String tipoEmpresa, Dono dono, String nome, String endereco) throws AtributoInvalidoException {
+        if (tipoEmpresa == null || tipoEmpresa.isEmpty())
+            throw new AtributoInvalidoException("Tipo de empresa invalido");
+
+        if (nome == null || nome.isEmpty())
             throw new AtributoInvalidoException("Nome invalido");
 
-        if(endereco == null || endereco.isEmpty())
-            throw new AtributoInvalidoException("Endereco invalido");
+        if (endereco == null || endereco.isEmpty())
+            throw new AtributoInvalidoException("Endereco da empresa invalido");
 
-        if(tipoCozinha == null || tipoCozinha.isEmpty())
-            throw new AtributoInvalidoException("Tipo de cozinha invalido");
-
-        if(dono == null)
+        if (dono == null)
             throw new AtributoInvalidoException("Dono invalido");
 
         this.tipoEmpresa = tipoEmpresa;
         this.dono = dono;
         this.nome = nome;
         this.endereco = endereco;
-        this.tipoCozinha = tipoCozinha;
         this.produtos = new ArrayList<>();
+        this.entregadores = new ArrayList<>();
     }
 
     public void adicionarProduto(Produto produto) {
         produtos.add(produto);
+    }
+
+    public void adicionarEntregador(Entregador entregador) {
+        entregadores.add(entregador);
+        entregador.adicionarEmpresa(this);
     }
 
     public Produto getProdutoPeloNome(String nome) throws ObjetoNaoEncontradoException {
@@ -59,7 +69,6 @@ public class Empresa implements Persistente {
         return switch (atributo) {
             case "nome" -> nome;
             case "endereco" -> endereco;
-            case "tipoCozinha" -> tipoCozinha;
             case "dono" -> dono.getAtributo("nome");
             default -> throw new AtributoInvalidoException("Atributo invalido");
         };
@@ -99,20 +108,20 @@ public class Empresa implements Persistente {
         this.endereco = endereco;
     }
 
-    public String getTipoCozinha() {
-        return tipoCozinha;
-    }
-
-    public void setTipoCozinha(String tipoCozinha) {
-        this.tipoCozinha = tipoCozinha;
-    }
-
     public String getTipoEmpresa() {
         return tipoEmpresa;
     }
 
     public void setTipoEmpresa(String tipoEmpresa) {
         this.tipoEmpresa = tipoEmpresa;
+    }
+
+    public List<Entregador> getEntregadores() {
+        return entregadores;
+    }
+
+    public void setEntregadores(List<Entregador> entregadores) {
+        this.entregadores = entregadores;
     }
 
     public List<Produto> getProdutos() {

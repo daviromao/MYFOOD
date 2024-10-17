@@ -2,10 +2,7 @@ package br.ufal.ic.p2.myfood;
 
 import br.ufal.ic.p2.myfood.exceptions.*;
 import br.ufal.ic.p2.myfood.models.*;
-import br.ufal.ic.p2.myfood.services.EmpresaService;
-import br.ufal.ic.p2.myfood.services.PedidoService;
-import br.ufal.ic.p2.myfood.services.ProdutoService;
-import br.ufal.ic.p2.myfood.services.UsuarioService;
+import br.ufal.ic.p2.myfood.services.*;
 
 import java.util.List;
 
@@ -20,6 +17,7 @@ public class Sistema {
     private EmpresaService empresaService = new EmpresaService();
     private ProdutoService produtoService = new ProdutoService();
     private PedidoService pedidoService = new PedidoService();
+    private EntregaService entregaService = new EntregaService();
 
     private Sistema() {
     }
@@ -102,6 +100,21 @@ public class Sistema {
         usuarioService.salvar(usuario);
     }
 
+    public void criarUsuario(String nome, String email, String senha, String endereco, String veiculo, String placa) throws AtributoInvalidoException, EmailExistenteException {
+        Usuario userWithPlaca = usuarioService.buscarTodos()
+                .stream()
+                .filter(user -> user.getTipo().equals(TipoUsuario.ENTREGADOR) && ((Entregador) user).getVeiculo().getPlaca().equals(placa))
+                .findFirst()
+                .orElse(null);
+
+        if(userWithPlaca != null)
+            throw new AtributoInvalidoException("Placa invalido");
+
+        Veiculo veiculoObj = new Veiculo(veiculo, placa);
+        Usuario usuario = new Entregador(nome, email, senha, endereco, veiculoObj);
+        usuarioService.salvar(usuario);
+    }
+
     /**
      * Realiza o login de um usuário
      *
@@ -133,7 +146,7 @@ public class Sistema {
         if (usuario.getPermissoes().stream().noneMatch(p -> p.equals(Permissoes.CRIAR_EMRPESA)))
             throw new UsuarioSemPermissaoException("Usuario nao pode criar uma empresa");
 
-        Empresa novaEmpresa = new Empresa(tipoEmpresa, (Dono) usuario, nome, endereco, tipoCozinha);
+        Empresa novaEmpresa = new Restaurante(tipoEmpresa, (Dono) usuario, nome, endereco, tipoCozinha);
         return empresaService.salvar(novaEmpresa);
     }
 
@@ -141,7 +154,7 @@ public class Sistema {
      * Obtém as empresas associadas a um dono
      *
      * @param idDono O ID do dono
-     * @return Uma string com as informações das empresas do dono
+     * @return Uma 'string' com as informações das empresas do dono
      * @throws ObjetoNaoEncontradoException Se o dono não for encontrado
      * @throws UsuarioSemPermissaoException Se o dono não tiver permissão para criar uma empresa
      */
@@ -360,5 +373,137 @@ public class Sistema {
         Cliente clienteObj = (Cliente) usuarioService.buscar(cliente);
         Empresa empresaObj = empresaService.buscarEmpresaPorId(empresa);
         return pedidoService.getNumeroPedido(clienteObj, empresaObj, indice);
+    }
+
+    // Milestone 2
+    public void alterarFuncionamento(int empresaId, String abre, String fecha) throws ObjetoNaoEncontradoException, AtributoInvalidoException {
+        Empresa empresa = empresaService.buscarEmpresaPorId(empresaId);
+
+        if(!(empresa instanceof Mercado))
+            throw new AtributoInvalidoException("Nao e um mercado valido");
+
+        ((Mercado) empresa).alterarHorario(abre, fecha);
+    }
+
+    public int criarEmpresa(String tipoEmpresa, int idDono, String nome, String endereco, boolean aberto24h, int numeroDeFuncionarios) throws ObjetoNaoEncontradoException, UsuarioSemPermissaoException, AtributoInvalidoException, EmpresaInvalidaException {
+        Usuario usuario = usuarioService.buscar(idDono);
+
+        if (usuario.getPermissoes().stream().noneMatch(p -> p.equals(Permissoes.CRIAR_EMRPESA)))
+            throw new UsuarioSemPermissaoException("Usuario nao pode criar uma empresa");
+
+        Empresa novaEmpresa = new Farmacia(tipoEmpresa, (Dono) usuario, nome, endereco, aberto24h, numeroDeFuncionarios);
+        return empresaService.salvar(novaEmpresa);
+    }
+
+    public void cadastrarEntregador(int empresa, int entregador) throws ObjetoNaoEncontradoException, UsuarioSemPermissaoException {
+        Usuario usuario = usuarioService.buscar(entregador);
+        Empresa empresaObj = empresaService.buscarEmpresaPorId(empresa);
+
+        if(usuario.getPermissoes().stream().noneMatch(p -> p.equals(Permissoes.ENTREGAR_PEDIDO))){
+            throw new UsuarioSemPermissaoException("Usuario nao e um entregador");
+        }
+
+        empresaObj.adicionarEntregador((Entregador) usuario);
+    }
+
+    public int criarEmpresa(String tipoEmpresa, int dono, String nome, String endereco, String abre, String fecha, String tipoMercado) throws ObjetoNaoEncontradoException, UsuarioSemPermissaoException, AtributoInvalidoException, EmpresaInvalidaException {
+        Usuario usuario = usuarioService.buscar(dono);
+
+        if (usuario.getPermissoes().stream().noneMatch(p -> p.equals(Permissoes.CRIAR_EMRPESA)))
+            throw new UsuarioSemPermissaoException("Usuario nao pode criar uma empresa");
+
+        Empresa novaEmpresa = new Mercado(tipoEmpresa, (Dono) usuario, nome, endereco, abre, fecha, tipoMercado);
+        return empresaService.salvar(novaEmpresa);
+    }
+
+    public String getEntregadores(int empresa) throws ObjetoNaoEncontradoException {
+        Empresa empresaObj = empresaService.buscarEmpresaPorId(empresa);
+        List<Entregador> entregadores = empresaObj.getEntregadores();
+
+        List<String> entregadoresString = entregadores.stream()
+                .map(Usuario::getEmail)
+                .toList();
+
+        return "{" + entregadoresString + "}";
+    }
+
+    public String getEmpresas(int entregador) throws ObjetoNaoEncontradoException {
+        Usuario usuario = usuarioService.buscar(entregador);
+
+        if(usuario.getTipo() != TipoUsuario.ENTREGADOR)
+            throw new ObjetoNaoEncontradoException("Usuario nao e um entregador");
+
+        Entregador entregadorObj = (Entregador) usuario;
+        List<Empresa> empresas = entregadorObj.getEmpresas();
+
+        List<String> empresasString = empresas.stream()
+                .map(e -> String.valueOf(List.of(e.getNome(), e.getEndereco())))
+                .toList();
+
+        return "{" + empresasString + "}";
+    }
+
+    public void liberarPedido(int idPedido) throws EstadoPedidoInvalidoException {
+        Pedido pedido = pedidoService.buscarPedido(idPedido);
+
+        if(pedido.getEstado().equals(EstadoPedido.PRONTO))
+            throw new EstadoPedidoInvalidoException("Pedido ja liberado");
+
+        if(!pedido.getEstado().equals(EstadoPedido.PREPARANDO))
+            throw new EstadoPedidoInvalidoException("Nao e possivel liberar um produto que nao esta sendo preparado");
+
+        pedido.setEstado(EstadoPedido.PRONTO);
+    }
+
+    public int obterPedido(int entregador) throws ObjetoNaoEncontradoException {
+        Usuario usuario = usuarioService.buscar(entregador);
+
+        if(usuario.getTipo() != TipoUsuario.ENTREGADOR)
+            throw new ObjetoNaoEncontradoException("Usuario nao e um entregador");
+
+        if(((Entregador) usuario).getEmpresas().size() == 0)
+            throw new ObjetoNaoEncontradoException("Entregador nao estar em nenhuma empresa.");
+
+        Pedido pedido = pedidoService.buscarPedidoPorEntregador((Entregador) usuario);
+
+        if(pedido == null)
+            throw new ObjetoNaoEncontradoException("Nao existe pedido para entrega");
+
+        return pedido.getId();
+    }
+
+    public int criarEntrega(int pedido, int entregador, String destino) throws ObjetoNaoEncontradoException, EstadoPedidoInvalidoException {
+        Pedido pedidoObj = pedidoService.buscarPedido(pedido);
+        Usuario usuario = usuarioService.buscar(entregador);
+
+        if(!pedidoObj.getEstado().equals(EstadoPedido.PRONTO))
+            throw new EstadoPedidoInvalidoException("Pedido nao esta pronto para entrega");
+
+        if(usuario.getTipo() != TipoUsuario.ENTREGADOR)
+            throw new ObjetoNaoEncontradoException("Nao e um entregador valido");
+
+        if(((Entregador) usuario).getStatus().equals(EntregadorStatus.OCUPADO))
+            throw new EstadoPedidoInvalidoException("Entregador ainda em entrega");
+
+        Entrega entrega =  entregaService.criarEntrega(pedidoObj, (Entregador) usuario, destino);
+
+        return entrega.getId();
+    }
+
+    public String getAtributo(int idEntrega, String atributo) throws AtributoInvalidoException {
+        return entregaService.buscar(idEntrega).getAtributo(atributo);
+    }
+
+    public String getIdEntrega(int idPedido) throws ObjetoNaoEncontradoException {
+        Pedido pedido = pedidoService.buscarPedido(idPedido);
+
+        if(pedido.getEntrega() == null)
+            throw new ObjetoNaoEncontradoException("Nao existe entrega com esse id");
+
+        return String.valueOf(pedido.getEntrega().getId());
+    }
+
+    public void entregar(int idEntrega) throws ObjetoNaoEncontradoException {
+        entregaService.finalizarEntrega(idEntrega);
     }
 }

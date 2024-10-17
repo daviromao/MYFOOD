@@ -25,8 +25,8 @@ public class Dono extends Usuario {
         };
     }
 
-    public String getTipo() {
-        return TipoUsuario.DONO.name();
+    public TipoUsuario getTipo() {
+        return TipoUsuario.DONO;
     }
 
     @Override

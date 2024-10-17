@@ -154,4 +154,3 @@ expect ${pe2} getNumeroPedido cliente=${id2} empresa=${e2} indice=0
 expect ${pe3} getNumeroPedido cliente=${id2} empresa=${e1} indice=1
 
 encerrarSistema
-quit
