@@ -1,6 +1,6 @@
 # Projeto da Disciplina de P2 - MyFood
 
-## Relatório de Entrega 1
+## Relatório de Entrega 1 e 2
 
 Alunos: "Davi da Silva Romão"
 
@@ -17,11 +17,13 @@ O projeto foi desenvolvido em Java, com o uso da prática de programação TDD: 
 
 Classes que estrutura os dados do sistema.
 
-- **Empresa**: Representa uma empresa que pode ter vários produtos e pedidos.
+- **Empresa**: Representa uma empresa abstrata que pode ter vários produtos e pedidos.
 - **Produto**: Representa um produto que pode ser vendido por uma empresa.
 - **Pedido**: Representa um pedido que pode ter vários produtos.
-- **Usuario**: Representa um usuário que pode ser um cliente ou um dono de empresa.
-- **Permissão**: Enum que representa as permissões de um usuário, e. g., criar empresa.
+- **Entrega**: Representa a entrega e um pedido pronto para ser entregue.
+- **Veiculo**: Representa um veiculo de um entregador, pensado na possibilidade futura de ter mais veículos para um entregador.
+- **Usuario**: Representa um usuário abstrato que pode ser um cliente, dono de empresa ou entregador.
+- **Permissão**: Enum que representa as permissões de um usuário, e. g., criar empresa, entregar pedido.
 
 #### Persistencia:
 
@@ -30,7 +32,7 @@ A classe PersistenciaXML e a própria interface foi criada utilizando generics, 
 
 #### Serviços:
 
-Implementa as regras de negócio de cada modelo. Ao total são os seguintes serviços: EmpresaService, PedidoService, ProdutoService e UsuarioService (Dono e Cliente).
+Implementa as regras de negócio de cada modelo. Ao total são os seguintes serviços: EmpresaService, PedidoService, ProdutoService, UsuarioService (Dono, Cliente e Entregador) e EntregaService.
 
 #### Sistema
 
@@ -100,7 +102,7 @@ Nesse exemplo, dois donos não podem ter empresas com o mesmo nome e um dono nã
 
 Isso facilita com que as regras de negócio sejam facilmente alteradas e testadas, pois estão isoladas em uma classe específica, além de permitir identificar facilmente algum bug na regra de negócio.
 
-Outro detalhe muito importante é a própria utilização da Orientação a Objeto para nos ajudar a lidar com abstrações e polimorfismo. Por exemplo, usuário é uma classe abstrata que possui dois filhos: Cliente e Dono. Ambas as classes filhas possuem muitas informações em comum, mas também possuem informações específicas. Dessa forma, podemos tratar um Cliente e um Dono como um Usuário, o que facilita a implementação de métodos que lidam com Usuários, sem a necessidade de saber se é um Cliente ou um Dono.
+Outro detalhe muito importante é a própria utilização da Orientação a Objeto para nos ajudar a lidar com abstrações e polimorfismo. Por exemplo, usuário é uma classe abstrata que possui dois filhos: Cliente, Dono e Restaurante. Ambas as classes filhas possuem muitas informações em comum, mas também possuem informações específicas. Dessa forma, podemos tratar um Cliente e um Dono como um Usuário, o que facilita a implementação de métodos que lidam com Usuários, sem a necessidade de saber se é um Cliente ou um Dono.
 
 Adiante, ainda nesse sentido, ao invés de deixar as classes apenas como uma "entidade" que possui apenas atributos, foi implementado métodos que fazem sentido para a classe. Por exemplo, a classe Pedido possui um método "adicionarProduto" que adiciona um produto ao pedido. Isso faz sentido, pois um pedido pode ter produtos. Dessa forma, a classe Pedido não é apenas uma "entidade" que possui atributos, mas também possui comportamentos. Além do pedido poder calcular o valor total do pedido, adicionar produtos, remover produtos, etc.
 
@@ -108,6 +110,18 @@ Então, comportamentos intrínsecos a uma classe foram implementados na própria
 
 Como dito em aula, quando há um lançamento de exceção ao criar um objeto, o desenvolvedor vai direto na classe que deu problema, por isso, segui as recomendações de adicionar a validação no construtor.
 
+## Diagrama de Classes
+ Foi utilizado a versão UML apresentada no livro "Engenharia de Software Moderna".
+
+O objetivo deste diagrama é apenas dar uma visão geral do sistema, desconsiderando métodos como getters e setters, métodos de validação e também regras de negócio. A modelagem é apenas um versão simplificada de como as classes do projeto se relacionam entre si. Assim, como exemplo, podemos observar que um produto pertence a uma empresa, que pode fazer parte de um pedido e que um entregador é responsável pela entrega do pedido para um cliente.
+
+![image](https://github.com/user-attachments/assets/ada9f2c9-443e-4e49-9f62-4698a747ae96)
+
+Referencia: Marco Tulio Valente. Engenharia de Software Moderna: Princípios e Práticas para Desenvolvimento de Software com Produtividade, Editora: Independente, 2020.
+
+
 ## Conclusão:
 
 Foi possível implementar um sistema de gestão de pedidos de um restaurante utilizando a prática de TDD e a divisão de responsabilidades em camadas. O sistema é capaz de cadastrar empresas, usuários, produtos e pedidos. Além disso, foi possível ver algumas oportunidades de aprendizado e refatoramento de código durante a criação.
+
+A entrega para a Milestone 2 não obteve problemas significativos, haja visdta que o projeto já havia sido criado inicialmente com o objetivo de ser fácil a criação de novas features. Assim, não foi necessário refatorar grandes linhas de código para que fosse possível a adição de novos tipos de empresas, usuários e feature de entrega.
